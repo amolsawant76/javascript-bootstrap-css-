@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: lightskyblue;
+        }
+    </style>
+    <script>
+        var std = []
+        function reset_forms() {
+            document.getElementById("name").value = ""
+            document.getElementById("email").value = ""
+            document.getElementById("gender_male").checked = false
+            document.getElementById("gender_female").checked = false
+            document.getElementById("gender_others").checked = false
+            document.getElementById("err").innerHTML = ""
+
+        }
+
+
+        function save_student() {
+            var n = document.getElementById("name").value;
+            if (n == "") {
+                document.getElementById("err").innerHTML = "Name is empty"
+                return
+            }
+            var email = document.getElementById("email").value;
+            if (email == "") {
+                document.getElementById("err").innerHTML = "email is empty"
+                return
+            }
+            var gender_arr = document.getElementsByName("gender");
+            var gender = "";
+            if (gender_arr[0].checked) {
+                gender = gender_arr[0].value;
+            } else if (gender_arr[1].checked) {
+                gender = gender_arr[1].value
+            } else if (gender_arr[2].checked) {
+                gender = gender_arr[2].value
+            }
+            if (gender == "") {
+                document.getElementById("err").innerHTML = "Gender is not selected"
+                return
+            }
+            std.push({
+                name: n,
+                email: email,
+                gender: gender
+            })
+            reset_forms();
+        }
+        function display_student() {
+            var table_data = "";
+            for (var i = 0; i < std.length; i++) {
+                table_data = table_data + `
+                        <tr>
+                            <td>${std[i].name}</td>
+                            <td>${std[i].email}</td>
+                            <td>${std[i].gender}</td>
+                        </tr>
+                `
+            }
+            document.getElementById("table-body").innerHTML = table_data;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-around align-items-center" style="height:98vh">
+            <div class="col-4 p-5 shadow">
+                <div class="mb-3" style="text-align: center;">
+                    <p class="fst-italic text-white" id="err" style="font-size: 0.8rem;"></p>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="name" placeholder="Name">
+                </div>
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="email" placeholder="Email">
+                </div>
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+			<h6>Gender</h6>
+                        <input class="form-check-input" type="radio" name="gender" id="gender_male" value="male">
+                        <label class="form-check-label" for="gender_male">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="gender_female" value="female">
+                        <label class="form-check-label" for="gender_female">Female</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="gender_others" value="others">
+                        <label class="form-check-label" for="gender_others">Others</label>
+                    </div>
+                </div>
+                <div class="mb-3" style="text-align: center;">
+                    <button class="btn btn-primary" onclick="save_student()">Save</button>
+                    <button class="btn btn-primary ms-3" onclick="display_student()">Display</button>
+                </div>
+            </div>
+            <div class="col-4 p-3 shadow">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
